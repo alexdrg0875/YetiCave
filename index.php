@@ -3,6 +3,68 @@ $is_auth = (bool) rand(0, 1);
 
 $user_name = 'Константин';
 $user_avatar = 'img/user.jpg';
+
+$categories = ["Доски и лыжи","Крепления","Ботинки","Одежда","Инструменты","Разное"];
+
+$lots = [
+  [
+    'name' => '2014 Rossignol District Snowboard',
+    'category' => 'Доски и лыжи',
+    'price' => '10999',
+    'image_name' => 'lot-1.jpg',
+    'alt' => 'Сноуборд',
+    'description' => 'Просто борд'
+  ],
+  [
+    'name' => 'DC Ply Mens 2016/2017 Snowboard',
+    'category' => 'Доски и лыжи',
+    'price' => '159999',
+    'image_name' => 'lot-2.jpg',
+    'alt' => 'Сноуборд',
+    'description' => 'Легкий маневренный сноуборд, готовый дать жару в любом парке, растопив
+          снег
+          мощным щелчкоми четкими дугами. Стекловолокно Bi-Ax, уложенное в двух направлениях, наделяет этот
+          снаряд
+          отличной гибкостью и отзывчивостью, а симметричная геометрия в сочетании с классическим прогибом
+          кэмбер
+          позволит уверенно держать высокие скорости. А если к концу катального дня сил совсем не останется,
+          просто
+          посмотрите на Вашу доску и улыбнитесь, крутая графика от Шона Кливера еще никого не оставляла
+          равнодушным.'
+  ],
+  [
+    'name' => 'Крепления Union Contact Pro 2015 года размер L/XL',
+    'category' => 'Крепления',
+    'price' => '8000',
+    'image_name' => 'lot-3.jpg',
+    'alt' => 'Крепления',
+    'description' => 'Просто крепление'
+  ],
+  [
+    'name' => 'Ботинки для сноуборда DC Mutiny Charcoal',
+    'category' => 'Ботинки',
+    'price' => '10999',
+    'image_name' => 'lot-4.jpg',
+    'alt' => 'Ботинки',
+    'description' => 'Просто ботинки'
+  ],
+  [
+    'name' => 'Куртка для сноуборда DC Mutiny Charcoal',
+    'category' => 'Одежда',
+    'price' => '7500',
+    'image_name' => 'lot-5.jpg',
+    'alt' => 'Куртка',
+    'description' => 'Просто куртка'
+  ],
+  [
+    'name' => 'Маска Oakley Canopy',
+    'category' => 'Разное',
+    'price' => '5400',
+    'image_name' => 'lot-6.jpg',
+    'alt' => 'Маска',
+    'description' => 'Просто маска'
+  ]
+];
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -27,23 +89,23 @@ $user_avatar = 'img/user.jpg';
         <a class="main-header__add-lot button" href="add-lot.html">Добавить лот</a>
 
         <nav class="user-menu">
-            <?php if ($is_auth): ?>
-                <div class="user-menu__image">
-                    <img src="<?=$user_avatar; ?>" width="40" height="40" alt="Пользователь">
-                </div>
-                <div class="user-menu__logged">
-                    <p><?=htmlspecialchars($user_name); ?></p>
-                </div>
-            <?php else: ?>
-                <ul class="user-menu__list">
-                    <li class="user-menu__item">
-                        <a href="#">Регистрация</a>
-                    </li>
-                    <li class="user-menu__item">
-                        <a href="#">Вход</a>
-                    </li>
-                </ul>
-            <?php endif; ?>
+          <?php if ($is_auth): ?>
+              <div class="user-menu__image">
+                  <img src="<?=$user_avatar; ?>" width="40" height="40" alt="Пользователь">
+              </div>
+              <div class="user-menu__logged">
+                  <p><?=htmlspecialchars($user_name); ?></p>
+              </div>
+          <?php else: ?>
+              <ul class="user-menu__list">
+                  <li class="user-menu__item">
+                      <a href="#">Регистрация</a>
+                  </li>
+                  <li class="user-menu__item">
+                      <a href="#">Вход</a>
+                  </li>
+              </ul>
+          <?php endif; ?>
         </nav>
     </div>
 </header>
@@ -103,24 +165,14 @@ $user_avatar = 'img/user.jpg';
 <footer class="main-footer">
     <nav class="nav">
         <ul class="nav__list container">
-            <li class="nav__item">
-                <a href="all-lots.html">Доски и лыжи</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Крепления</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Ботинки</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Одежда</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Инструменты</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Разное</a>
-            </li>
+          <?php
+            $index = 0;
+            $num_count = count($categories);
+              while ($index < $num_count){?>
+                <li class="nav__item">
+                  <a href="all-lots.html"><?=htmlspecialchars($categories[$index]); ?></a>
+                </li>
+          <?php $index++; } ?>
         </ul>
     </nav>
     <div class="main-footer__bottom container">

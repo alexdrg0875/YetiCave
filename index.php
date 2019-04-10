@@ -1,4 +1,6 @@
 <?php
+require_once('functions.php');
+
 $is_auth = (bool) rand(0, 1);
 
 $user_name = 'Константин';
@@ -150,7 +152,7 @@ $lots = [
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost">10 999<b class="rub">р</b></span>
+                            <span class="lot__cost"><?=format_amount(10999); ?><b class="rub">р</b></span>
                         </div>
                         <div class="lot__timer timer">
 

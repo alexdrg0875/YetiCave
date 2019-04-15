@@ -6,9 +6,16 @@
  * Time: 21:39
  */
 require_once ('data.php');
+require_once ('userdata.php');
 require_once ('functions.php');
 
-#print_r($lots[$_GET['id']]);
+session_start();
+
+if (isset($_SESSION['user_name'])){
+  $is_auth = $_SESSION['is_auth'];
+  $user_name = $_SESSION['user_name'];
+  $user_avatar = $_SESSION['user_avatar'];
+}
 
 // проверяем наличие куки с lotsviewed
 if (isset($_COOKIE['lotsviewed'])){
@@ -35,6 +42,7 @@ if (isset($lots[$_GET['id']])) {
     }
 
     $page_content = renderTemplate('templates/lot.php', [
+        'is_auth' => $is_auth,
         'lot_name' => $lots[$_GET['id']]['name'],
         'lot_image' => $lots[$_GET['id']]['image_name'],
         'lot_alt' => $lots[$_GET['id']]['alt'],

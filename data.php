@@ -8,10 +8,10 @@ $bets = [
     ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')]
 ];
 
-$is_auth = (bool) rand(0, 1);
+//$is_auth = (bool) rand(0, 1);
 
-$user_name = 'Константин';
-$user_avatar = 'img/user.jpg';
+//$user_name = 'Константин';
+//$user_avatar = 'img/user.jpg';
 
 $categories = ["Доски и лыжи","Крепления","Ботинки","Одежда","Инструменты","Разное"];
 $lots = [

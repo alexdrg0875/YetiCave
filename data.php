@@ -41,7 +41,7 @@ $lots = [
           равнодушным.'
     ],
     [
-        'name' => 'Крепления Union Contact Pro 2015 года размер L/XL',
+            'name' => 'Крепления Union Contact Pro 2015 года размер L/XL',
         'category' => 'Крепления',
         'price' => '8000',
         'image_name' => 'lot-3.jpg',

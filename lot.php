@@ -6,20 +6,21 @@
  * Time: 21:39
  */
 require_once ('data.php');
-require_once ('userdata.php');
 require_once ('functions.php');
 
 session_start();
 
 if (isset($_SESSION['user_name'])){
   $is_auth = $_SESSION['is_auth'];
+  $user_id = $_SESSION['user_id'];
+  $user_email = $_SESSION['user_email'];
   $user_name = $_SESSION['user_name'];
   $user_avatar = $_SESSION['user_avatar'];
 }
 
 // проверяем наличие куки с lotsviewed
-if (isset($_COOKIE['lotsviewed'])){
-    $lots_viewed = json_decode($_COOKIE['lotsviewed']);
+if (isset($_COOKIE['lotsviewed_' . $user_name . $user_id])){
+    $lots_viewed = json_decode($_COOKIE['lotsviewed_' . $user_name . $user_id]);
 } else {
     $lots_viewed = [];
 }
@@ -38,7 +39,7 @@ if (isset($lots[$_GET['id']])) {
 
     if ($new_item) {
         $lots_viewed[] = $_GET['id'];
-        setcookie('lotsviewed', json_encode($lots_viewed), strtotime('+1 week'), '/');
+        setcookie('lotsviewed_' . $user_name . $user_id, json_encode($lots_viewed), strtotime('+1 week'), '/');
     }
 
     $page_content = renderTemplate('templates/lot.php', [

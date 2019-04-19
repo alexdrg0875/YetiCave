@@ -2,24 +2,12 @@
         <h2 class="promo__title">Нужен стафф для катки?</h2>
         <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
         <ul class="promo__list">
-            <li class="promo__item promo__item--boards">
-                <a class="promo__link" href="all-lots.html">Доски и лыжи</a>
+          <?php
+          foreach ($categories as $key) { ?>
+            <li class="promo__item promo__item--<?=$key['ename']; ?>">
+                <a class="promo__link" href="all-lots.html"><?=$key['name']; ?></a>
             </li>
-            <li class="promo__item promo__item--attachment">
-                <a class="promo__link" href="all-lots.html">Крепления</a>
-            </li>
-            <li class="promo__item promo__item--boots">
-                <a class="promo__link" href="all-lots.html">Ботинки</a>
-            </li>
-            <li class="promo__item promo__item--clothing">
-                <a class="promo__link" href="all-lots.html">Одежда</a>
-            </li>
-            <li class="promo__item promo__item--tools">
-                <a class="promo__link" href="all-lots.html">Инструменты</a>
-            </li>
-            <li class="promo__item promo__item--other">
-                <a class="promo__link" href="all-lots.html">Разное</a>
-            </li>
+          <?php } ?>
         </ul>
     </section>
     <section class="lots">
@@ -28,20 +16,18 @@
         </div>
         <ul class="lots__list">
             <?php
-            $index = 0;
-            $num_count = count($lots);
-            while ($index < $num_count){?>
+            foreach ($lots as $key) {?>
                 <li class="lots__item lot">
                     <div class="lot__image">
-                        <img src="img/<?=$lots[$index]['image_name'];?>" width="350" height="260" alt="<?=htmlspecialchars($lots[$index]['alt']);?>">
+                        <img src="<?=$key['image_path'];?>" width="350" height="260" alt="<?=htmlspecialchars($key['alt']);?>">
                     </div>
                     <div class="lot__info">
-                        <span class="lot__category"><?=$lots[$index]['category'];?></span>
-                        <h3 class="lot__title"><a class="text-link" href="lot.php?id=<?=$index; ?>"><?=htmlspecialchars($lots[$index]['name']);?></a></h3>
+                        <span class="lot__category"><?=$key['category'];?></span>
+                        <h3 class="lot__title"><a class="text-link" href="lot.php?id=<?=$key['id']; ?>"><?=htmlspecialchars($key['name']);?></a></h3>
                         <div class="lot__state">
                             <div class="lot__rate">
                                 <span class="lot__amount">Стартовая цена</span>
-                                <span class="lot__cost"><?=format_amount(htmlspecialchars($lots[$index]['price']));?></span>
+                                <span class="lot__cost"><?=format_amount(htmlspecialchars($key['price']));?></span>
                             </div>
                             <div class="lot__timer timer">
                                 <?=lot_life_time (); ?>
@@ -49,6 +35,6 @@
                         </div>
                     </div>
                 </li>
-            <?php $index++; } ?>
+            <?php } ?>
         </ul>
     </section>

@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS `categories`;
 CREATE TABLE `categories` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` char(255) NOT NULL,
+  `ename` char(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -34,7 +35,7 @@ CREATE TABLE `lots` (
   `title` char(255) NOT NULL,
   `alt_title` char(50) NOT NULL DEFAULT 'Фотография лота',
   `description` text,
-  `path` char(255) NOT NULL,
+  `path` char(255) NOT NULL DEFAULT 'img/lot.jpg',
   PRIMARY KEY (`id`),
   KEY `category_id` (`category_id`),
   KEY `user_id` (`user_id`),

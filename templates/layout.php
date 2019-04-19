@@ -30,7 +30,8 @@
          </div>
            <div class="user-menu__logged">
              <p><?=htmlspecialchars($user_name); ?></p>
-             <a href="logout.php">Выход</a>
+               <a href="#">Мои лоты</a>
+               <a href="logout.php">Выход</a>
             </div>
       <?php else: ?>
          <ul class="user-menu__list">
@@ -52,13 +53,11 @@
   <nav class="nav">
     <ul class="nav__list container">
       <?php
-      $index = 0;
-      $num_count = count($categories);
-      while ($index < $num_count){?>
+      foreach ($categories as $key) { ?>
         <li class="nav__item">
-          <a href="all-lots.html"><?=htmlspecialchars($categories[$index]); ?></a>
+          <a href="all-lots.html"><?=htmlspecialchars($key['name']); ?></a>
         </li>
-      <?php $index++; } ?>
+      <?php } ?>
     </ul>
   </nav>
   <div class="main-footer__bottom container">

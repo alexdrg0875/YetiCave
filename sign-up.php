@@ -6,10 +6,22 @@
  * Time: 17:18
  */
 
-require_once ('data.php');
+require_once ('init.php');
 require_once ('functions.php');
 
 session_start();
+
+// запрос сиска категорий
+if($connect_sql == false) {
+  print('Ошибка подключения:' . mysqli_connect_error());
+} else {
+  $query_result = mysqli_query($connect_sql, 'SELECT id, name, ename FROM categories ORDER BY id');
+  if (!$query_result){
+    print('Ошибка MYSQL:' . mysqli_error());
+  } else {
+    $categories = mysqli_fetch_all($query_result, MYSQLI_ASSOC);
+  }
+}
 
 
 // Выполняется при отправке формы с последующей валидацией
@@ -39,13 +51,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
 // проверка введенного email на возможность существования в базе
   if (empty($errors)) {
-    $con = mysqli_connect('localhost', 'root', '', 'yeticave');
-    if($con == false) {
-      print('Ошибка подключения:' . mesqli_connect_error());
+    if($connect_sql == false) {
+      print('Ошибка подключения:' . mysqli_connect_error());
     } else {
-      $query_result = mysqli_query($con, 'SELECT email FROM users');
+      $query_result = mysqli_query($connect_sql, 'SELECT email FROM users');
       if (!$query_result){
-        print('Ошибка MYSQL:' . mesqli_error());
+        print('Ошибка MYSQL:' . mysqli_error());
       } else {
         $users = mysqli_fetch_all($query_result, MYSQLI_ASSOC);
         foreach ($users as $user_id) {
@@ -63,6 +74,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 // Выполняется для исправления ошибок в форме
   if (!empty($errors)) {
     $page_content = renderTemplate('templates/sign-up.php', [
+      'categories' => $categories,
       'form_error' => $form_error,
       'email_error' => $errors['email'],
       'description_email_err' => $text_error['email'],
@@ -90,19 +102,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // после прохождения всех проверок регистрируем нового пользователя в базе
   if (empty($errors)) {
-    $con = mysqli_connect('localhost', 'root', '', 'yeticave');
-    if($con == false) {
-      print('Ошибка подключения:' . mesqli_connect_error());
+    if(!$connect_sql) {
+      print('Ошибка подключения:' . mysqli_connect_error());
     } else {
-      $stmt = mysqli_prepare($con, "INSERT INTO users (dt_add, email, name, password, avatar_path) VALUES (?,?,?,?,?)");
+      $stmt = mysqli_prepare($connect_sql, "INSERT INTO users (dt_add, email, name, password, avatar_path) VALUES (?,?,?,?,?)");
       mysqli_stmt_bind_param($stmt,'sssss',date('Y-m-d H:i:s'),$email, $name, password_hash($password, PASSWORD_DEFAULT), $user_avatar);
-      if (!$query_result){
-        print('Ошибка MYSQL:' . mesqli_error());
-      } else {
-        mysqli_stmt_execute($stmt);
-        $_SESSION = [];
-        header('Location: login.php');
-      }
+      mysqli_stmt_execute($stmt);
+      mysqli_stmt_close($stmt);
+      mysqli_close($connect_sql);
+
+      $_SESSION = [];
+      header('Location: login.php');
     }
   }
 
@@ -110,7 +120,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // Выполняется при первой загрузке страницы
 
-  $page_content = renderTemplate('templates/sign-up.php');
+  $page_content = renderTemplate('templates/sign-up.php', [
+    'categories' => $categories,
+  ]);
 
   $layout_content = renderTemplate('templates/layout.php', [
     'content' => $page_content,

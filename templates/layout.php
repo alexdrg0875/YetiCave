@@ -30,8 +30,7 @@
          </div>
            <div class="user-menu__logged">
              <p><?=htmlspecialchars($user_name); ?></p>
-               <a href="#">Мои лоты</a>
-               <a href="logout.php">Выход</a>
+             <a href="logout.php">Выход</a>
             </div>
       <?php else: ?>
          <ul class="user-menu__list">

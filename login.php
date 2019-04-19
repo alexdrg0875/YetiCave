@@ -5,23 +5,10 @@
  * Date: 02.04.2019
  * Time: 23:45
  */
-
-require_once ('init.php');
+require_once ('data.php');
 require_once ('functions.php');
 
 session_start();
-
-// запрос сиска категорий
-if($connect_sql == false) {
-  print('Ошибка подключения:' . mysqli_connect_error());
-} else {
-  $query_result = mysqli_query($connect_sql, 'SELECT id, name, ename FROM categories ORDER BY id');
-  if (!$query_result){
-    print('Ошибка MYSQL:' . mysqli_error());
-  } else {
-    $categories = mysqli_fetch_all($query_result, MYSQLI_ASSOC);
-  }
-}
 
 
 // Выполняется при отправке формы с последующей валидацией
@@ -49,12 +36,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // поиск e-mail в базе и проверка пароля
   if (empty($errors)) {
-    if($connect_sql == false) {
-      print('Ошибка подключения:' . mysqli_connect_error());
+    $con = mysqli_connect('localhost', 'root', '', 'yeticave');
+    if($con == false) {
+      print('Ошибка подключения:' . mesqli_connect_error());
     } else {
-      $query_result = mysqli_query($connect_sql, 'SELECT id, email, name, password, avatar_path FROM users');
+      $query_result = mysqli_query($con, 'SELECT id, email, name, password, avatar_path FROM users');
       if (!$query_result){
-        print('Ошибка MYSQL:' . mysqli_error());
+        print('Ошибка MYSQL:' . mesqli_error());
       } else {
         $users = mysqli_fetch_all($query_result, MYSQLI_ASSOC);
         foreach ($users as $key) {
@@ -68,6 +56,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
               $user_name = $key['name'];
               $user_avatar = $key['avatar_path'];
               setcookie('user_email', $key['email'], strtotime('+1 year'), '/');
+              $_SESSION['is_auth'] = $is_auth;
+              $_SESSION['user_id'] =  $user_id;
+              $_SESSION['user_email'] =  $user_email;
+              $_SESSION['user_name'] = $user_name;
+              $_SESSION['user_avatar'] = $user_avatar;
               break;
             } else {
               $errors['password'] = 'form__item--invalid';
@@ -85,13 +78,23 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // Выполняется если пользователь прошел аутенфикацию
   if (empty($errors)) {
-    $_SESSION['is_auth'] = $is_auth;
-    $_SESSION['user_id'] =  $user_id;
-    $_SESSION['user_email'] =  $user_email;
-    $_SESSION['user_name'] = $user_name;
-    $_SESSION['user_avatar'] = $user_avatar;
 
-    header('Location: index.php');
+    $page_content = renderTemplate('templates/index.php', [
+      'lots' => $lots
+    ]);
+
+    $layout_content = renderTemplate('templates/layout.php', [
+      'content' => $page_content,
+      'categories' => $categories,
+      'is_auth' => $is_auth,
+      'user_name' => $user_name,
+      'user_avatar' => $user_avatar,
+      'title' => 'Главная',
+      'main_class' => 'container'
+    ]);
+
+    print($layout_content);
+
   }
 
 // Выполняется для исправления ошибок в форме
@@ -103,7 +106,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
       'pass_error' => $errors['password'],
       'description_pass_err' => $text_error['password'],
       'email' => $email,
-      'categories' => $categories,
     ]);
 
     $layout_content = renderTemplate('templates/layout.php', [
@@ -137,7 +139,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
 
   $page_content = renderTemplate('templates/login.php', [
-    'categories' => $categories,
     'email' => $email
   ]);
 

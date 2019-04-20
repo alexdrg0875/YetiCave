@@ -5,7 +5,7 @@
  * Date: 30.03.2019
  * Time: 15:30
  */
-require_once ('data.php');
+require_once ('init.php');
 require_once ('userdata.php');
 require_once ('functions.php');
 

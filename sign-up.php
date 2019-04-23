@@ -15,7 +15,7 @@ session_start();
 if($connect_sql == false) {
   print('Ошибка подключения:' . mysqli_connect_error());
 } else {
-  $query_result = mysqli_query($connect_sql, 'SELECT id, category FROM categories ORDER BY id');
+  $query_result = mysqli_query($connect_sql, 'SELECT id, name, ename FROM categories ORDER BY id');
   if (!$query_result){
     print('Ошибка MYSQL:' . mysqli_error());
   } else {
@@ -74,6 +74,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 // Выполняется для исправления ошибок в форме
   if (!empty($errors)) {
     $page_content = renderTemplate('templates/sign-up.php', [
+      'categories' => $categories,
       'form_error' => $form_error,
       'email_error' => $errors['email'],
       'description_email_err' => $text_error['email'],
@@ -101,18 +102,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // после прохождения всех проверок регистрируем нового пользователя в базе
   if (empty($errors)) {
-    if($connect_sql == false) {
+    if(!$connect_sql) {
       print('Ошибка подключения:' . mysqli_connect_error());
     } else {
       $stmt = mysqli_prepare($connect_sql, "INSERT INTO users (dt_add, email, name, password, avatar_path) VALUES (?,?,?,?,?)");
       mysqli_stmt_bind_param($stmt,'sssss',date('Y-m-d H:i:s'),$email, $name, password_hash($password, PASSWORD_DEFAULT), $user_avatar);
-      if (!$query_result){
-        print('Ошибка MYSQL:' . mysqli_error());
-      } else {
-        mysqli_stmt_execute($stmt);
-        $_SESSION = [];
-        header('Location: login.php');
-      }
+      mysqli_stmt_execute($stmt);
+      mysqli_stmt_close($stmt);
+      mysqli_close($connect_sql);
+
+      $_SESSION = [];
+      header('Location: login.php');
     }
   }
 
@@ -120,7 +120,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // Выполняется при первой загрузке страницы
 
-  $page_content = renderTemplate('templates/sign-up.php');
+  $page_content = renderTemplate('templates/sign-up.php', [
+    'categories' => $categories,
+  ]);
 
   $layout_content = renderTemplate('templates/layout.php', [
     'content' => $page_content,

@@ -15,7 +15,7 @@ session_start();
 if($connect_sql == false) {
   print('Ошибка подключения:' . mysqli_connect_error());
 } else {
-  $query_result = mysqli_query($connect_sql, 'SELECT id, category FROM categories ORDER BY id');
+  $query_result = mysqli_query($connect_sql, 'SELECT id, name, ename FROM categories ORDER BY id');
   if (!$query_result){
     print('Ошибка MYSQL:' . mysqli_error());
   } else {
@@ -68,11 +68,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
               $user_name = $key['name'];
               $user_avatar = $key['avatar_path'];
               setcookie('user_email', $key['email'], strtotime('+1 year'), '/');
-              $_SESSION['is_auth'] = $is_auth;
-              $_SESSION['user_id'] =  $user_id;
-              $_SESSION['user_email'] =  $user_email;
-              $_SESSION['user_name'] = $user_name;
-              $_SESSION['user_avatar'] = $user_avatar;
               break;
             } else {
               $errors['password'] = 'form__item--invalid';
@@ -90,9 +85,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // Выполняется если пользователь прошел аутенфикацию
   if (empty($errors)) {
+    $_SESSION['is_auth'] = $is_auth;
+    $_SESSION['user_id'] =  $user_id;
+    $_SESSION['user_email'] =  $user_email;
+    $_SESSION['user_name'] = $user_name;
+    $_SESSION['user_avatar'] = $user_avatar;
 
     header('Location: index.php');
-
   }
 
 // Выполняется для исправления ошибок в форме
@@ -104,6 +103,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
       'pass_error' => $errors['password'],
       'description_pass_err' => $text_error['password'],
       'email' => $email,
+      'categories' => $categories,
     ]);
 
     $layout_content = renderTemplate('templates/layout.php', [
@@ -137,6 +137,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
 
   $page_content = renderTemplate('templates/login.php', [
+    'categories' => $categories,
     'email' => $email
   ]);
 

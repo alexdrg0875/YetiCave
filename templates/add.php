@@ -1,26 +1,14 @@
   <nav class="nav">
     <ul class="nav__list container">
-      <li class="nav__item">
-        <a href="all-lots.html">Доски и лыжи</a>
-      </li>
-      <li class="nav__item">
-        <a href="all-lots.html">Крепления</a>
-      </li>
-      <li class="nav__item">
-        <a href="all-lots.html">Ботинки</a>
-      </li>
-      <li class="nav__item">
-        <a href="all-lots.html">Одежда</a>
-      </li>
-      <li class="nav__item">
-        <a href="all-lots.html">Инструменты</a>
-      </li>
-      <li class="nav__item">
-        <a href="all-lots.html">Разное</a>
-      </li>
+      <?php
+      foreach ($categories as $key) { ?>
+        <li class="nav__item">
+          <a href="all-lots.html"><?=htmlspecialchars($key['name']); ?></a>
+        </li>
+      <?php } ?>
     </ul>
   </nav>
-  <form class="form form--add-lot container <?=$form_error; ?>" action="add.php" method="post"> <!-- form--invalid -->
+  <form class="form form--add-lot container <?=$form_error; ?>" action="add.php" method="post" enctype="multipart/form-data"> <!-- form--invalid --> <!--https://echo.htmlacademy.ru-->
     <h2>Добавление лота</h2>
     <div class="form__container-two">
       <div class="form__item <?=$name_error; ?>"> <!-- form__item--invalid -->
@@ -32,12 +20,10 @@
         <label for="category">Категория</label>
         <select id="category" name="category" required>
           <option>Выберите категорию</option>
-          <option>Доски и лыжи</option>
-          <option>Крепления</option>
-          <option>Ботинки</option>
-          <option>Одежда</option>
-          <option>Инструменты</option>
-          <option>Разное</option>
+          <?php
+          foreach ($categories as $key) { ?>
+              <option><?=htmlspecialchars($key['name']); ?></option>
+          <?php } ?>
         </select>
         <span class="form__error">Выберите категорию</span>
       </div>
@@ -47,16 +33,16 @@
       <textarea id="message" name="message" placeholder="Напишите описание лота" required><?=$message; ?></textarea>
       <span class="form__error">Напишите описание лота</span>
     </div>
-    <div class="form__item form__item--file"> <!-- form__item--uploaded -->
+    <div class="form__item form__item--file <?=$file_error; ?>"> <!-- form__item--uploaded -->
       <label>Изображение</label>
       <div class="preview">
         <button class="preview__remove" type="button">x</button>
         <div class="preview__img">
-          <img src="img/avatar.jpg" width="113" height="113" alt="Изображение лота">
+          <img src="<?=$file_url; ?>" width="113" height="113" alt="Изображение лота">
         </div>
       </div>
       <div class="form__input-file">
-        <input class="visually-hidden" type="file" id="photo2" value="">
+        <input class="visually-hidden" type="file" name="file" id="photo2" value="">
         <label for="photo2">
           <span>+ Добавить</span>
         </label>

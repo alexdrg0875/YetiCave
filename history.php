@@ -18,13 +18,13 @@ if (isset($_SESSION['user_name'])){
   $user_avatar = $_SESSION['user_avatar'];
 }
 $lots_viewed = json_decode($_COOKIE['lotsviewed_' . $user_name . $user_id]);
-print ($_COOKIE['lotsviewed_' . $user_name . $user_id]);
+//print ($_COOKIE['lotsviewed_' . $user_name . $user_id]);
 
 // запрос списка категорий
 if($connect_sql == false) {
   print('Ошибка подключения:' . mysqli_connect_error());
 } else {
-  $query_result = mysqli_query($connect_sql, "SELECT id, category FROM categories ORDER BY id");
+  $query_result = mysqli_query($connect_sql, "SELECT id, name, ename FROM categories ORDER BY id");
   if (!$query_result){
     print('Ошибка MYSQL:' . mysqli_error());
   } else {
@@ -36,7 +36,7 @@ if($connect_sql == false) {
 if($connect_sql == false) {
   print('Ошибка подключения:' . mysqli_connect_error());
 } else {
-  $query_result = mysqli_query($connect_sql, "SELECT l.id, l.title AS name, c.category, l.price, l.path AS image_path, l.alt_title AS alt, l.description FROM lots AS l JOIN categories AS c ON l.category_id = c.id");
+  $query_result = mysqli_query($connect_sql, "SELECT l.id, l.title AS name, c.name, l.price, l.path AS image_path, l.alt_title AS alt, l.description FROM lots AS l JOIN categories AS c ON l.category_id = c.id");
   if (!$query_result){
     print('Ошибка MYSQL:' . mysqli_error());
   } else {
@@ -48,6 +48,7 @@ if($connect_sql == false) {
 
 $page_content = renderTemplate('templates/history.php', [
     'lots_viewed' => $lots_viewed,
+  'categories' => $categories,
     'lots' => $lots
 ]);
 

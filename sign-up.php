@@ -34,7 +34,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
   $password = $_POST['password'] ?? '';
   $name = $_POST['name'] ?? '';
   $message = $_POST['message'] ?? '';
-  $user_avatar = $_POST['photo2'] ?? 'img/user.jpg';
+  $file_url = 'img/' . $_POST['file'] ?? 'img/user.jpg'; // если отсутствует загруженное изображение, то подставляется заглушка
 
 // проверка полей на пустоту и введенного e-mail
   foreach ($required_fields as $field) {
@@ -49,6 +49,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
       }
     }
   }
+
 // проверка введенного email на возможность существования в базе
   if (empty($errors)) {
     if($connect_sql == false) {
@@ -69,6 +70,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
       }
     }
+  }
+
+  // проверка загруженного изображеня пользователя
+  if (!empty($_FILES['file']['name'])) {
+    $file_name = $_FILES['file']['name'];
+    $file_path = __DIR__ . '/img/';
+    $file_url = 'img/' . $file_name;
+    move_uploaded_file($_FILES['file']['tmp_name'], $file_path . $file_name);
   }
 
 // Выполняется для исправления ошибок в форме
@@ -106,12 +115,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
       print('Ошибка подключения:' . mysqli_connect_error());
     } else {
       $stmt = mysqli_prepare($connect_sql, "INSERT INTO users (dt_add, email, name, password, avatar_path) VALUES (?,?,?,?,?)");
-      mysqli_stmt_bind_param($stmt,'sssss',date('Y-m-d H:i:s'),$email, $name, password_hash($password, PASSWORD_DEFAULT), $user_avatar);
+      mysqli_stmt_bind_param($stmt,'sssss',date('Y-m-d H:i:s'),$email, $name, password_hash($password, PASSWORD_DEFAULT), $file_url);
       mysqli_stmt_execute($stmt);
       mysqli_stmt_close($stmt);
       mysqli_close($connect_sql);
 
       $_SESSION = [];
+      //print_r($_FILES);
       header('Location: login.php');
     }
   }

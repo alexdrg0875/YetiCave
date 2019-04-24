@@ -1,14 +1,14 @@
 <nav class="nav">
   <ul class="nav__list container">
     <?php
-    foreach ($categories as $key) { ?>
+    foreach ($categories as $value) { ?>
         <li class="nav__item">
-            <a href="all-lots.html"><?=htmlspecialchars($key['name']); ?></a>
+            <a href="all-lots.html"><?=htmlspecialchars($value['name']); ?></a>
         </li>
     <?php } ?>
   </ul>
 </nav>
-<form class="form container <?=$form_error; ?>" action="sign-up.php" method="post"> <!-- form--invalid -->
+<form class="form container <?=$form_error; ?>" action="sign-up.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
   <h2>Регистрация нового аккаунта</h2>
   <div class="form__item <?=$email_error; ?>"> <!-- form__item--invalid -->
     <label for="email">E-mail*</label>
@@ -35,11 +35,11 @@
     <div class="preview">
       <button class="preview__remove" type="button">x</button>
       <div class="preview__img">
-        <img src="img/avatar.jpg" width="113" height="113" alt="Ваш аватар">
+        <img src="<?=$file_url; ?>" width="113" height="113" alt="Ваш аватар">
       </div>
     </div>
     <div class="form__input-file">
-      <input class="visually-hidden" type="file" id="photo2" value="">
+      <input class="visually-hidden" type="file" name="file" id="photo2" value="">
       <label for="photo2">
         <span>+ Добавить</span>
       </label>

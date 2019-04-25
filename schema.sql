@@ -58,7 +58,6 @@ CREATE TABLE `users` (
 
 CREATE INDEX u_bet ON bets(user_id);
 CREATE INDEX l_bet ON bets(lot_id);
-CREATE FULLTEXT INDEX lots_ft_search ON lots(title, description);
 --ALTER TABLE `gifs_like` ADD UNIQUE INDEX (`user_id`, `gif_id`);
 --ALTER TABLE `gifs_fav` ADD UNIQUE INDEX (`user_id`, `gif_id`) ;
 

@@ -1,9 +1,9 @@
   <nav class="nav">
     <ul class="nav__list container">
       <?php
-      foreach ($categories as $key) { ?>
+      foreach ($categories as $value) { ?>
           <li class="nav__item">
-              <a href="all-lots.html"><?=htmlspecialchars($key['name']); ?></a>
+              <a href="all-lots.php?cat=<?=$value['id']; ?>"><?=htmlspecialchars($value['name']); ?></a>
           </li>
       <?php } ?>
     </ul>
@@ -19,10 +19,13 @@
         <p class="lot-item__description"><?=htmlspecialchars($lot_description); ?></p>
       </div>
       <div class="lot-item__right">
-        <?php if ($is_auth && ($user_id != $lot_user_id)) { ?>
+        <?php if ($is_auth && ($user_id != $lot_user_id)) {
+          if ((int)lot_life_time() < 1) {    // если осталось время жизни лота менее часа, устанавливаем соотв. class
+            $timer_class = 'timer--finishing';
+          } ?>
         <div class="lot-item__state">
-          <div class="lot-item__timer timer">
-            10:54:12
+          <div class="lot-item__timer timer <?=$timer_class; ?>">
+            <?=lot_life_time(); ?>
           </div>
           <div class="lot-item__cost-state">
             <div class="lot-item__rate">
@@ -45,11 +48,11 @@
         <div class="history">
           <h3>История ставок (<span><?=$row_cnt; ?></span>)</h3>
           <table class="history__list">
-            <?php foreach ($bets as $key) { ?>
+            <?php foreach ($bets as $value) { ?>
             <tr class="history__item">
-              <td class="history__name"><?=htmlspecialchars($key['name']); ?></td>
-              <td class="history__price"><?=format_amount(htmlspecialchars($key['bet'])); ?></td>
-              <td class="history__time"><?=htmlspecialchars($key['dt_add']); ?></td>
+              <td class="history__name"><?=htmlspecialchars($value['name']); ?></td>
+              <td class="history__price"><?=format_amount(htmlspecialchars($value['bet'])); ?></td>
+              <td class="history__time"><?=htmlspecialchars($value['dt_add']); ?></td>
             </tr>
             <?php } ?>
           </table>

@@ -3,9 +3,9 @@
         <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
         <ul class="promo__list">
           <?php
-          foreach ($categories as $key) { ?>
-            <li class="promo__item promo__item--<?=$key['ename']; ?>">
-                <a class="promo__link" href="all-lots.html"><?=$key['name']; ?></a>
+          foreach ($categories as $value) { ?>
+            <li class="promo__item promo__item--<?=$value['ename']; ?>">
+                <a class="promo__link" href="all-lots.php?cat=<?=$value['id']; ?>"><?=$value['name']; ?></a>
             </li>
           <?php } ?>
         </ul>
@@ -16,21 +16,33 @@
         </div>
         <ul class="lots__list">
             <?php
-            foreach ($lots as $key) {?>
+            foreach ($lots as $value) {
+                if ($value['count_bets']) { // проверяем по наличию ставок тип отображаемой цены и наименования цены лота
+                   $price_title = $value['count_bets'] . ' ставок';
+                   $price = $value['max_price'];
+                } else {
+                   $price_title = 'Стартовая цена';
+                   $price = $value['price'];
+                }
+                if ((int)lot_life_time() < 1) {    // если осталось время жизни лота менее часа, устанавливаем соотв. class
+                    $timer_class = 'timer--finishing';
+                }?>
                 <li class="lots__item lot">
                     <div class="lot__image">
-                        <img src="<?=$key['image_path'];?>" width="350" height="260" alt="<?=htmlspecialchars($key['alt']);?>">
+                        <img src="<?=$value['image_path'];?>" width="350" height="260" alt="<?=htmlspecialchars($value['alt']);?>">
                     </div>
                     <div class="lot__info">
-                        <span class="lot__category"><?=$key['category'];?></span>
-                        <h3 class="lot__title"><a class="text-link" href="lot.php?id=<?=$key['id']; ?>"><?=htmlspecialchars($key['name']);?></a></h3>
+                        <span class="lot__category"><?=$value['category'];?></span>
+                        <h3 class="lot__title">
+                            <a class="text-link" href="lot.php?id=<?=$value['id']; ?>"><?=htmlspecialchars($value['name']); ?></a>
+                        </h3>
                         <div class="lot__state">
                             <div class="lot__rate">
-                                <span class="lot__amount">Текущая цена</span>
-                                <span class="lot__cost"><?=format_amount(htmlspecialchars($price = $key['max_price'] ?? $key['price']));?></span>
+                                <span class="lot__amount"><?=$price_title; ?></span>
+                                <span class="lot__cost"><?=format_amount(htmlspecialchars($price)); ?></span>
                             </div>
-                            <div class="lot__timer timer">
-                                <?=lot_life_time (); ?>
+                            <div class="lot__timer timer <?=$timer_class; ?>">
+                                <?=lot_life_time(); ?>
                             </div>
                         </div>
                     </div>

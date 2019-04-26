@@ -1,0 +1,13 @@
+{
+    "name": "alex_drg/yeticave",
+    "description": "Website auction",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Deryhlazov Oleksandr",
+            "email": "oleksandr.deryhlazov75@gmail.com"
+        }
+    ],
+    "require": {}
+}

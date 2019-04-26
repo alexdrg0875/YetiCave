@@ -8,6 +8,7 @@
 
 require_once ('init.php');
 require_once ('functions.php');
+require_once ('vendor/autoload.php');
 
 session_start();
 
@@ -25,7 +26,7 @@ if($connect_sql == false) {
 } else {
   $query_result = mysqli_query($connect_sql, "SELECT id, name, ename FROM categories ORDER BY id");
   if (!$query_result){
-    print('Ошибка MYSQL:' . mysqli_error());
+    print('Ошибка MYSQL:' . mysqli_error($connect_sql));
   } else {
     $categories = mysqli_fetch_all($query_result, MYSQLI_ASSOC);
   }
@@ -35,9 +36,9 @@ if($connect_sql == false) {
 if($connect_sql == false) {
   print('Ошибка подключения:' . mysqli_connect_error());
 } else {
-  $query_result = mysqli_query($connect_sql, "SELECT l.id, l.user_id, l.title AS name, c.name, l.price, l.bet_step, l.path AS image_path, l.alt_title AS alt, l.description FROM lots AS l JOIN categories AS c ON l.category_id = c.id WHERE l.id = $_GET[id]");
+  $query_result = mysqli_query($connect_sql, "SELECT l.id, l.user_id, l.title AS name, c.name AS category, l.price, l.bet_step, l.path AS image_path, l.alt_title AS alt, l.description FROM lots AS l JOIN categories AS c ON l.category_id = c.id WHERE l.id = $_GET[id]");
   if (!$query_result){
-    print('Ошибка MYSQL:' . mysqli_error());
+    print('Ошибка MYSQL:' . mysqli_error($connect_sql));
   } else {
     $lots = mysqli_fetch_all($query_result, MYSQLI_ASSOC);
   }
@@ -49,10 +50,10 @@ if($connect_sql == false) {
 } else {
   $query_result = mysqli_query($connect_sql, "SELECT u.name, b.bet, DATE_FORMAT(b.dt_add, '%d.%m.%y в %H:%i') AS dt_add FROM bets AS b JOIN users AS u ON b.user_id = u.id WHERE b.lot_id = $_GET[id] ORDER BY b.bet DESC LIMIT 10");
   if (!$query_result){
-    print('Ошибка MYSQL:' . mysqli_error());
+    print('Ошибка MYSQL:' . mysqli_error($connect_sql));
   } else {
     $bets = mysqli_fetch_all($query_result, MYSQLI_ASSOC);
-    if ($lots[0]['price'] < $bets[0]['bet']){ // назначение минимальной ставки по лоту
+    if ($lots[0]['price'] < $bets[0]['bet']){ // вычисление максимальной ставки по лоту
       $max_bet = $bets[0]['bet'];
     } else {
       $max_bet = $lots[0]['price'];

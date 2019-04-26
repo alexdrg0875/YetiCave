@@ -7,6 +7,7 @@
  */
 require_once ('init.php');
 require_once ('functions.php');
+require_once ('vendor/autoload.php');
 
 session_start();
 
@@ -26,7 +27,7 @@ if($connect_sql == false) {
 } else {
   $query_result = mysqli_query($connect_sql, "SELECT id, name, ename FROM categories ORDER BY id");
   if (!$query_result){
-    print('Ошибка MYSQL:' . mysqli_error());
+    print('Ошибка MYSQL:' . mysqli_error($connect_sql));
   } else {
     $categories = mysqli_fetch_all($query_result, MYSQLI_ASSOC);
   }
@@ -38,7 +39,7 @@ if($connect_sql == false) {
 } else {
   $query_result = mysqli_query($connect_sql, "SELECT l.id, l.title AS name, c.name, l.price, l.path AS image_path, l.alt_title AS alt, l.description FROM lots AS l JOIN categories AS c ON l.category_id = c.id");
   if (!$query_result){
-    print('Ошибка MYSQL:' . mysqli_error());
+    print('Ошибка MYSQL:' . mysqli_error($connect_sql));
   } else {
     $lots = mysqli_fetch_all($query_result, MYSQLI_ASSOC);
   }

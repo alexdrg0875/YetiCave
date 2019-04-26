@@ -1,9 +1,9 @@
 <nav class="nav">
   <ul class="nav__list container">
     <?php
-    foreach ($categories as $key) { ?>
+    foreach ($categories as $value) { ?>
         <li class="nav__item">
-            <a href="all-lots.html"><?=htmlspecialchars($key['name']); ?></a>
+            <a href="all-lots.php?cat=<?=$value['id']; ?>"><?=htmlspecialchars($value['name']); ?></a>
         </li>
     <?php } ?>
   </ul>
@@ -14,18 +14,18 @@
     <ul class="lots__list">
       <?php
       if (isset($lots_viewed)) {
-        foreach($lots_viewed as $key):?>
+        foreach($lots_viewed as $value):?>
           <li class="lots__item lot">
             <div class="lot__image">
-              <img src="<?=$lots[$key]['image_path']; ?>" width="350" height="260" alt="<?=htmlspecialchars($lots[$key]['alt']); ?>">
+              <img src="<?=$lots[$value]['image_path']; ?>" width="350" height="260" alt="<?=htmlspecialchars($lots[$value]['alt']); ?>">
             </div>
             <div class="lot__info">
-              <span class="lot__category"><?=$lots[$key]['category']; ?></span>
-              <h3 class="lot__title"><a class="text-link" href="lot.php?id=<?=$key; ?>"><?=htmlspecialchars($lots[$key]['name']); ?></a></h3>
+              <span class="lot__category"><?=$lots[$value]['category']; ?></span>
+              <h3 class="lot__title"><a class="text-link" href="lot.php?id=<?=$value; ?>"><?=htmlspecialchars($lots[$value]['name']); ?></a></h3>
               <div class="lot__state">
                 <div class="lot__rate">
                   <span class="lot__amount">Стартовая цена</span>
-                  <span class="lot__cost"><?=format_amount(htmlspecialchars($lots[$key]['price']));?></span>
+                  <span class="lot__cost"><?=format_amount(htmlspecialchars($lots[$value]['price']));?></span>
                 </div>
                 <div class="lot__timer timer">
                   16:54:12

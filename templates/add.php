@@ -1,9 +1,9 @@
   <nav class="nav">
     <ul class="nav__list container">
       <?php
-      foreach ($categories as $key) { ?>
+      foreach ($categories as $value) { ?>
         <li class="nav__item">
-          <a href="all-lots.html"><?=htmlspecialchars($key['name']); ?></a>
+          <a href="all-lots.php?cat=<?=$value['id']; ?>"><?=htmlspecialchars($value['name']); ?></a>
         </li>
       <?php } ?>
     </ul>
@@ -21,8 +21,8 @@
         <select id="category" name="category" required>
           <option>Выберите категорию</option>
           <?php
-          foreach ($categories as $key) { ?>
-              <option><?=htmlspecialchars($key['name']); ?></option>
+          foreach ($categories as $value) { ?>
+              <option><?=htmlspecialchars($value['name']); ?></option>
           <?php } ?>
         </select>
         <span class="form__error">Выберите категорию</span>

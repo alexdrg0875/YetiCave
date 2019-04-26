@@ -6,7 +6,7 @@ INSERT INTO categories SET name = 'Инструменты', ename = 'tools';
 INSERT INTO categories SET name = 'Разное', ename = 'other';
 
 INSERT INTO lots SET title = '2014 Rossignol District Snowboard', category_id = '1', user_id = '1', dt_add = '2019-01-01 00:00:00', dt_end = '2020-01-01 00:00:00', price = '10999', bet_step = '100', path = 'img/lot-1.jpg', description = 'Просто борд';
-INSERT INTO lots SET title = 'DC Ply Mens 2016/2017 Snowboard', category_id = '1', user_id = '1', dt_add = '2019-01-01 00:00:00', dt_end = '2020-01-01 00:00:00', price = '159999', bet_step = '100', path = 'img/lot-2.jpg', description = 'Легкий маневренный сноуборд, готовый дать жару в любом парке, растопив
+INSERT INTO lots SET title = 'DC Ply Mens 2016/2017 Snowboard', category_id = '1', user_id = '1', dt_add = '2019-01-01 00:00:00', dt_end = '2020-01-01 00:00:00', price = '15999', bet_step = '100', path = 'img/lot-2.jpg', description = 'Легкий маневренный сноуборд, готовый дать жару в любом парке, растопив
           снег
           мощным щелчкоми четкими дугами. Стекловолокно Bi-Ax, уложенное в двух направлениях, наделяет этот
           снаряд
@@ -29,10 +29,10 @@ INSERT INTO bets SET dt_add = '2019-01-01 00:00:10', user_id = '1', lot_id = '1'
 INSERT INTO bets SET dt_add = '2019-01-01 00:00:20', user_id = '2', lot_id = '1', bet = '11500';
 INSERT INTO bets SET dt_add = '2019-01-01 00:00:30', user_id = '1', lot_id = '1', bet = '12000';
 INSERT INTO bets SET dt_add = '2019-01-01 00:00:40', user_id = '3', lot_id = '1', bet = '12200';
-INSERT INTO bets SET dt_add = '2019-01-01 00:00:10', user_id = '1', lot_id = '2', bet = '161000';
-INSERT INTO bets SET dt_add = '2019-01-01 00:00:20', user_id = '2', lot_id = '2', bet = '161500';
-INSERT INTO bets SET dt_add = '2019-01-01 00:00:30', user_id = '1', lot_id = '2', bet = '162000';
-INSERT INTO bets SET dt_add = '2019-01-01 00:00:40', user_id = '3', lot_id = '2', bet = '162200';
+INSERT INTO bets SET dt_add = '2019-01-01 00:00:10', user_id = '1', lot_id = '2', bet = '16100';
+INSERT INTO bets SET dt_add = '2019-01-01 00:00:20', user_id = '2', lot_id = '2', bet = '16150';
+INSERT INTO bets SET dt_add = '2019-01-01 00:00:30', user_id = '1', lot_id = '2', bet = '16200';
+INSERT INTO bets SET dt_add = '2019-01-01 00:00:40', user_id = '3', lot_id = '2', bet = '16220';
 INSERT INTO bets SET dt_add = '2019-01-01 00:00:10', user_id = '1', lot_id = '3', bet = '8000';
 INSERT INTO bets SET dt_add = '2019-01-01 00:00:20', user_id = '2', lot_id = '3', bet = '8100';
 INSERT INTO bets SET dt_add = '2019-01-01 00:00:30', user_id = '1', lot_id = '3', bet = '8200';
@@ -100,9 +100,10 @@ LIMIT 10;
 
 SELECT l.id
   , l.title AS name
-  , c.name
+  , c.name AS category
   , l.price
   , MAX(b.bet) AS max_price
+  , COUNT(b.bet) AS count_bets
   , l.path AS image_path
   , l.alt_title AS alt
   , l.description
@@ -112,6 +113,28 @@ ON l.category_id = c.id
 LEFT JOIN bets AS b
 ON b.lot_id=l.id
 GROUP BY l.id;
+
+SELECT *
+FROM lots
+WHERE MATCH (title, description) AGAINST ('char*' IN BOOLEAN MODE);
+
+SELECT l.id
+  , l.title AS name
+  , c.name AS category
+  , l.price
+  , MAX(b.bet) AS max_price
+  , COUNT(b.bet) AS count_bets
+  , l.path AS image_path
+  , l.alt_title AS alt
+  , l.description
+FROM lots AS l
+JOIN categories AS c
+ON l.category_id = c.id
+LEFT JOIN bets AS b
+ON b.lot_id = l.id
+WHERE MATCH (l.title, l.description) AGAINST ('char*' IN BOOLEAN MODE)
+GROUP BY l.id;
+
 
 
 

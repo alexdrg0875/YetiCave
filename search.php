@@ -33,7 +33,7 @@ if (strlen($_GET['search']) >= 3) {
   if($connect_sql == false) {
     print('Ошибка подключения:' . mysqli_connect_error());
   } else {
-    $query_result = mysqli_query($connect_sql, 'SELECT l.id, l.title AS name, c.name AS category, l.price, MAX(b.bet) AS max_price, COUNT(b.bet) AS count_bets, l.path AS image_path, l.alt_title AS alt, l.description FROM lots AS l JOIN categories AS c ON l.category_id = c.id LEFT JOIN bets AS b ON b.lot_id = l.id WHERE MATCH (l.title, l.description) AGAINST (\''.$_GET['search'].'*\' IN BOOLEAN MODE)GROUP BY l.id');
+    $query_result = mysqli_query($connect_sql, 'SELECT l.id, l.title AS name, l.dt_end, c.name AS category, l.price, MAX(b.bet) AS max_price, COUNT(b.bet) AS count_bets, l.path AS image_path, l.alt_title AS alt, l.description FROM lots AS l JOIN categories AS c ON l.category_id = c.id LEFT JOIN bets AS b ON b.lot_id = l.id WHERE MATCH (l.title, l.description) AGAINST (\''.$_GET['search'].'*\' IN BOOLEAN MODE)GROUP BY l.id');
     if (!$query_result){
       print('Ошибка MYSQL:' . mysqli_error($connect_sql));
     } else {

@@ -23,7 +23,7 @@ if($search_result) { ?>
               $price_title = 'Стартовая цена';
               $price = $value['price'];
             }
-            if ((int)lot_life_time() < 1) {    // если осталось время жизни лота менее часа, устанавливаем соотв. class
+            if (((int)lot_life_time($value['dt_end']) < 1) && (lot_life_time($value['dt_end']) != 'Торги окончены')) {    // если осталось время жизни лота менее часа, устанавливаем соотв. class
               $timer_class = 'timer--finishing';
             }?>
               <li class="lots__item lot">
@@ -41,7 +41,7 @@ if($search_result) { ?>
                               <span class="lot__cost"><?=format_amount(htmlspecialchars($price)); ?></span>
                           </div>
                           <div class="lot__timer timer <?=$timer_class; ?>">
-                            <?=lot_life_time (); ?>
+                            <?=lot_life_time($value['dt_end']); ?>
                           </div>
                       </div>
                   </div>

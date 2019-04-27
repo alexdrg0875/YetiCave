@@ -20,12 +20,12 @@
       </div>
       <div class="lot-item__right">
         <?php if ($is_auth && ($user_id != $lot_user_id)) {
-          if ((int)lot_life_time() < 1) {    // если осталось время жизни лота менее часа, устанавливаем соотв. class
+          if (((int)lot_life_time($lot_date_end) < 1) && lot_life_time($lot_date_end) != 'Торги окончены') {    // если осталось время жизни лота менее часа, устанавливаем соотв. class
             $timer_class = 'timer--finishing';
           } ?>
         <div class="lot-item__state">
           <div class="lot-item__timer timer <?=$timer_class; ?>">
-            <?=lot_life_time(); ?>
+            <?=lot_life_time($lot_date_end); ?>
           </div>
           <div class="lot-item__cost-state">
             <div class="lot-item__rate">

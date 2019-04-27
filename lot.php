@@ -36,7 +36,7 @@ if($connect_sql == false) {
 if($connect_sql == false) {
   print('Ошибка подключения:' . mysqli_connect_error());
 } else {
-  $query_result = mysqli_query($connect_sql, "SELECT l.id, l.user_id, l.title AS name, c.name AS category, l.price, l.bet_step, l.path AS image_path, l.alt_title AS alt, l.description FROM lots AS l JOIN categories AS c ON l.category_id = c.id WHERE l.id = $_GET[id]");
+  $query_result = mysqli_query($connect_sql, "SELECT l.id, l.user_id, l.title AS name, c.name AS category, l.price, l.bet_step, l.path AS image_path, l.alt_title AS alt, l.description, l.dt_end FROM lots AS l JOIN categories AS c ON l.category_id = c.id WHERE l.id = $_GET[id]");
   if (!$query_result){
     print('Ошибка MYSQL:' . mysqli_error($connect_sql));
   } else {
@@ -53,7 +53,7 @@ if($connect_sql == false) {
     print('Ошибка MYSQL:' . mysqli_error($connect_sql));
   } else {
     $bets = mysqli_fetch_all($query_result, MYSQLI_ASSOC);
-    if ($lots[0]['price'] < $bets[0]['bet']){ // вычисление максимальной ставки по лоту
+    if ($lots[0]['price'] < $bets[0]['bet']){ // вычисление максимальной ставки по лоту для корректного отображения цены лота
       $max_bet = $bets[0]['bet'];
     } else {
       $max_bet = $lots[0]['price'];
@@ -126,6 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       'lot_price' => $lots[0]['price'],
       'lot_bet_step' => $lots[0]['bet_step'],
       'lot_description' => $lots[0]['description'],
+      'lot_date_end' => $lots[0]['dt_end'],
       'bets' => $bets,
       'max_bet' => $max_bet,
       'row_cnt' => $row_cnt,

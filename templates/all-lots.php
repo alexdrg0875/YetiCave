@@ -21,13 +21,15 @@ if($search_result) { ?>
         </ul>
     </section>
     <ul class="pagination-list">
-        <li class="pagination-item pagination-item-prev"><a>Назад</a></li>
-        <li class="pagination-item pagination-item-active"><a>1</a></li>
-        <li class="pagination-item"><a href="#">2</a></li>
-        <li class="pagination-item"><a href="#">3</a></li>
-        <li class="pagination-item"><a href="#">4</a></li>
-        <li class="pagination-item pagination-item-next"><a href="#">Вперед</a></li>
-    </ul>
+        <li class="pagination-item pagination-item-prev"><a <?php if($cur_page != 1) { print('href="all-lots.php?page='.($cur_page - 1).'&cat='.$search_id.'"'); } ?>>Назад</a></li>
+      <?php foreach ($pages as $page) {
+        if ($page == $cur_page) { ?>
+            <li class="pagination-item pagination-item-active"><a><?= $page; ?></a></li>
+        <?php } else { ?>
+            <li class="pagination-item"><a href="all-lots.php?page=<?= $page.'&cat='.$search_id; ?>"><?= $page; ?></a></li>
+        <?php }
+      }?>
+        <li class="pagination-item pagination-item-next"><a <?php if($cur_page < $pages_count) { print('href="all-lots.php?page='.($cur_page + 1).'&cat='.$search_id.'"'); } ?>>Вперед</a></li>
 </div>
     <?php } else {?>
         <div class="container"><section class="lots"><h2>Товара в данной категории не существует</h2></section></div>

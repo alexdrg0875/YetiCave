@@ -20,15 +20,17 @@ if($search_result) { ?>
       } ?>
     </ul>
   </section>
-  <ul class="pagination-list">
-    <li class="pagination-item pagination-item-prev"><a>Назад</a></li>
-    <li class="pagination-item pagination-item-active"><a>1</a></li>
-    <li class="pagination-item"><a href="#">2</a></li>
-    <li class="pagination-item"><a href="#">3</a></li>
-    <li class="pagination-item"><a href="#">4</a></li>
-    <li class="pagination-item pagination-item-next"><a href="#">Вперед</a></li>
-  </ul>
-</div>
+<ul class="pagination-list">
+        <li class="pagination-item pagination-item-prev"><a <?php if($cur_page != 1) { print('href="search.php?page='.($cur_page - 1).'&search='.$search_string.'"'); } ?>>Назад</a></li>
+    <?php foreach ($pages as $page) {
+      if ($page == $cur_page) { ?>
+          <li class="pagination-item pagination-item-active"><a><?= $page; ?></a></li>
+      <?php } else { ?>
+          <li class="pagination-item"><a href="search.php?page=<?= $page.'&search='.$search_string; ?>"><?= $page; ?></a></li>
+      <?php }
+    }?>
+        <li class="pagination-item pagination-item-next"><a <?php if($cur_page < $pages_count) { print('href="search.php?page='.($cur_page + 1).'&search='.$search_string.'"'); } ?>>Вперед</a></li>
+</ul>
 <?php } else {?>
     <div class="container"><section class="lots"><h2>Ничего не найдено по вашему запросу</h2></section></div>
 <?php }?>

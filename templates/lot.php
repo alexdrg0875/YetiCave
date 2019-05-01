@@ -19,11 +19,11 @@
         <p class="lot-item__description"><?=htmlspecialchars($lot_description); ?></p>
       </div>
       <div class="lot-item__right">
-        <?php if ($is_auth && ($user_id != $lot_user_id)) {
-          if (((int)lot_life_time($lot_date_end) < 1) && lot_life_time($lot_date_end) != 'Торги окончены') {    // если осталось время жизни лота менее часа, устанавливаем соотв. class
-            $timer_class = 'timer--finishing';
-          } ?>
-        <div class="lot-item__state">
+        <?php
+          if (((int)lot_life_time($lot_date_end) < 1) && (lot_life_time($lot_date_end) != 'Торги окончены')) {    // если осталось время жизни лота менее часа, устанавливаем соотв. class
+          $timer_class = 'timer--finishing';
+        } ?>
+         <div class="lot-item__state">
           <div class="lot-item__timer timer <?=$timer_class; ?>">
             <?=lot_life_time($lot_date_end); ?>
           </div>
@@ -36,6 +36,10 @@
               Мин. ставка <span><?=format_amount(htmlspecialchars($max_bet + $lot_bet_step)); ?></span>
             </div>
           </div>
+        <?php if ($is_auth && ($user_id != $lot_user_id) && (lot_life_time($lot_date_end) != 'Торги окончены')) {
+          if (((int)lot_life_time($lot_date_end) < 1) && (lot_life_time($lot_date_end) != 'Торги окончены')) {    // если осталось время жизни лота менее часа, устанавливаем соотв. class
+            $timer_class = 'timer--finishing';
+          } ?>
           <form class="lot-item__form" action="lot.php?id=<?=$lot_id; ?>" method="post">
             <p class="lot-item__form-item">
               <label for="cost">Ваша ставка</label>
@@ -43,8 +47,8 @@
             </p>
             <button type="submit" class="button">Сделать ставку</button>
           </form>
-        </div>
         <?php }; ?>
+        </div>
         <div class="history">
           <h3>История ставок (<span><?=$row_cnt; ?></span>)</h3>
           <table class="history__list">
@@ -52,7 +56,7 @@
             <tr class="history__item">
               <td class="history__name"><?=htmlspecialchars($value['name']); ?></td>
               <td class="history__price"><?=format_amount(htmlspecialchars($value['bet'])); ?></td>
-              <td class="history__time"><?=htmlspecialchars($value['dt_add']); ?></td>
+              <td class="history__time"><?=$value['bet_date']; ?></td>
             </tr>
             <?php } ?>
           </table>

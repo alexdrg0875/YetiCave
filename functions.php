@@ -25,6 +25,7 @@ function lot_life_time($date_end) {
     $lot_life_day = floor((strtotime($date_end) - time()) / 86400); // количество полных дней
     $lot_life_hour = date('G', (strtotime($date_end) - time() - $offset)); // кол-во часов
     $lot_life_min = date('i', (strtotime($date_end) - time() - $offset)); // кол-во мин
+    //$lot_life_sec = date('s', (strtotime($date_end) - time() - $offset)); // кол-во сек
     if ($lot_life_day > 0) {   // обработка результата под формат отображения на странице
       $result = $lot_life_day.'д '.$lot_life_hour.'ч:'.$lot_life_min.'м';
     } elseif ((strtotime($date_end) - time()) < 0) {

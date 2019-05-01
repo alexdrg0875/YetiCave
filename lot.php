@@ -48,7 +48,7 @@ if($connect_sql == false) {
 if($connect_sql == false) {
   print('Ошибка подключения:' . mysqli_connect_error());
 } else {
-  $query_result = mysqli_query($connect_sql, "SELECT u.name, b.bet, DATE_FORMAT(b.dt_add, '%d.%m.%y в %H:%i') AS dt_add FROM bets AS b JOIN users AS u ON b.user_id = u.id WHERE b.lot_id = $_GET[id] ORDER BY b.bet DESC LIMIT 10");
+  $query_result = mysqli_query($connect_sql, "SELECT u.name, b.bet, DATE_FORMAT(b.dt_add, '%d.%m.%y в %H:%i') AS bet_date FROM bets AS b JOIN users AS u ON b.user_id = u.id WHERE b.lot_id = $_GET[id] ORDER BY b.bet DESC LIMIT 10");
   if (!$query_result){
     print('Ошибка MYSQL:' . mysqli_error($connect_sql));
   } else {

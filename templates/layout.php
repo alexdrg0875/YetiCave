@@ -30,7 +30,8 @@
          </div>
            <div class="user-menu__logged">
              <p><?=htmlspecialchars($user_name); ?></p>
-               <a href="#">Мои лоты</a>
+               <a href="my-lots.php">лоты</a>
+               <a href="my-bets.php">ставки</a>
                <a href="logout.php">Выход</a>
             </div>
       <?php else: ?>

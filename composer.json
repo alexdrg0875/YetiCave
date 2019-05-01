@@ -9,5 +9,7 @@
             "email": "oleksandr.deryhlazov75@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "swiftmailer/swiftmailer": "^6.2"
+    }
 }
